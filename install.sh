@@ -50,7 +50,7 @@ setup_directus_env() {
     mkdir -p $PROJECT_ROOT/$ENV/directus
     cd $PROJECT_ROOT/$ENV/directus
 
-    echo "🔧 Genereer .env"
+    echo "Genereer .env"
     cat <<EOF > .env
 DOMAIN=$ENV.$DOMAIN
 PORT=805${ENV: -1}  # bijv. 805d of 805p
