@@ -24,17 +24,17 @@ done
 
 # === Functie: DNS-records toevoegen via Linode API ===
 add_dns_records() {
-  echo "🛰  Voeg A-records toe voor $DOMAIN via Linode API..."
+  echo "Voeg A-records toe voor $DOMAIN via Linode API..."
 
   if [ -z "$API_TOKEN" ] || [ -z "$DOMAIN_ID" ]; then
-    echo "❌ API-token of domein ID ontbreekt. Sla DNS-aanmaak over."
+    echo "API-token of domein ID ontbreekt. Sla DNS-aanmaak over."
     return
   fi
 
   IP=$(curl -s ifconfig.me)
 
   for NAME in "$HOSTNAME" "*.$HOSTNAME"; do
-    echo "➕ DNS toevoegen: $NAME → $IP"
+    echo "DNS toevoegen: $NAME → $IP"
     curl -s -X POST \
       -H "Authorization: Bearer $API_TOKEN" \
       -H "Content-Type: application/json" \
@@ -46,7 +46,7 @@ add_dns_records() {
 # === Functie: Directus containers opzetten ===
 setup_directus_env() {
   for ENV in dev prod; do
-    echo "📁 Maak $ENV omgeving aan..."
+    echo "Maak $ENV omgeving aan..."
     mkdir -p $PROJECT_ROOT/$ENV/directus
     cd $PROJECT_ROOT/$ENV/directus
 
@@ -56,7 +56,7 @@ DOMAIN=$ENV.$DOMAIN
 PORT=805${ENV: -1}  # bijv. 805d of 805p
 EOF
 
-    echo "🚀 Start docker compose ($ENV)"
+    echo "Start docker compose ($ENV)"
     docker compose up -d || docker-compose up -d
   done
 }
@@ -68,4 +68,4 @@ fi
 
 setup_directus_env
 
-echo "✅ Installatie afgerond. Toegang: https://prod.$DOMAIN en https://dev.$DOMAIN"
+echo "Installatie afgerond. Toegang: https://prod.$DOMAIN en https://dev.$DOMAIN"
