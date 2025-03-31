@@ -11,7 +11,7 @@ set -e
 # === Config ===
 DOMAIN=$(cat /etc/klantdomein)
 PROJECT_ROOT=/srv
-API_TOKEN=${LINODE_API_TOKEN:-""} # uit .env of shell export
+API_SECRET=${API_SECRET:-""} # uit .env of shell export
 DOMAIN_ID=${LINODE_DOMAIN_ID:-""} # ID van serverz.nl domein
 DO_DNS=false
 
@@ -26,7 +26,7 @@ done
 add_dns_records() {
   echo "🛰  Voeg A-records toe voor $DOMAIN via Linode API..."
 
-  if [ -z "$API_TOKEN" ] || [ -z "$DOMAIN_ID" ]; then
+  if [ -z "$API_SECRET" ] || [ -z "$DOMAIN_ID" ]; then
     echo "❌ API-token of domein ID ontbreekt. Sla DNS-aanmaak over."
     return
   fi
@@ -36,7 +36,7 @@ add_dns_records() {
   for NAME in "$HOSTNAME" "*.$HOSTNAME"; do
     echo "➕ DNS toevoegen: $NAME → $IP"
     curl -s -X POST \
-      -H "Authorization: Bearer $API_TOKEN" \
+      -H "Authorization: Bearer $API_SECRET" \
       -H "Content-Type: application/json" \
       -d '{"type": "A", "name": "'"$NAME"'", "target": "'"$IP"'", "ttl_sec": 300}' \
       https://api.linode.com/v4/domains/$DOMAIN_ID/records
